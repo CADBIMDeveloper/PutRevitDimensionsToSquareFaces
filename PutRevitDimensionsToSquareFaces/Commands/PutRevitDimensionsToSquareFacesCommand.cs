@@ -51,7 +51,12 @@ namespace PutRevitDimensionsToSquareFaces.Commands
                 .GetSolids()
                 .SelectMany(x => x.Faces.Cast<Face>())
                 .OfType<PlanarFace>()
-                .Single(x => x.Reference.ConvertToStableRepresentation(doc) == faceReference.ConvertToStableRepresentation(doc));
+                .Single(x => IsTheSameReference(doc, faceReference, x));
+        }
+
+        private static bool IsTheSameReference(Document doc, Reference faceReference, Face face)
+        {
+            return faceReference.ConvertToStableRepresentation(doc).EndsWith(face.Reference.ConvertToStableRepresentation(doc));
         }
 
         private static Reference SelectSquareFace(UIDocument uiDocument)
