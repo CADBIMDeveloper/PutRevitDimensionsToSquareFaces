@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Put dimensions to square faces</Text>
+    <Description>Command puts dimensions to square faces </Description>
+    <Assembly>PutRevitDimensionsToSquareFaces.dll</Assembly>
+    <FullClassName>PutRevitDimensionsToSquareFaces.Command</FullClassName>
+    <ClientId>6a96df15-a15d-4620-8ce7-1127fb63f8df</ClientId>
+    <VendorId>a.s.ignatovich</VendorId>
+    <VendorDescription>Revit developer</VendorDescription>
+  </AddIn>
+</RevitAddIns>
