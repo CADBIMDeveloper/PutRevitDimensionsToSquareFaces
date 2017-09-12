@@ -5,3 +5,8 @@ on [obtaining references to edges](https://forums.autodesk.com/t5/revit-api-foru
 dimensioning purposes.
 
 Task: automatically create dimensions on a square face of a generic model. i.e. the user selects the face and the dimensions simply appear.
+
+## License
+
+This sample is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+Please see the [LICENSE](LICENSE) file for full details.
