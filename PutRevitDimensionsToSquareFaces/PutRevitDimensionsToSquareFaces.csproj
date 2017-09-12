@@ -46,7 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\PutRevitDimensionsToSquareFacesCommand.cs" />
+    <Compile Include="DimensionsCreators\BuiltInFamilyDimensionCreator.cs" />
+    <Compile Include="DimensionsCreators\FamilyInstanceDimensionsCreator.cs" />
+    <Compile Include="DimensionsCreators\IDimensionCreator.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Extensions\EdgeExtensions.cs" />
     <Compile Include="Extensions\ElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectionFilters\SquareFaceSelectionFilter.cs" />

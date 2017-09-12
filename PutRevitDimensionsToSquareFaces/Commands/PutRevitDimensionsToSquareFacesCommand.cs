@@ -5,6 +5,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.Exceptions;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using PutRevitDimensionsToSquareFaces.DimensionsCreators;
 using PutRevitDimensionsToSquareFaces.Extensions;
 using PutRevitDimensionsToSquareFaces.SelectionFilters;
 
@@ -30,14 +31,20 @@ namespace PutRevitDimensionsToSquareFaces.Commands
 
             var dimensionOrigin = FindFaceCenter(squaredFace);
 
+            var familyInstance = doc.GetElement(faceReference) as FamilyInstance;
+
+            var dimensionsCreator = familyInstance != null
+                ? (IDimensionCreator) new FamilyInstanceDimensionsCreator(familyInstance, squaredFace)
+                : new BuiltInFamilyDimensionCreator(doc);
+
             using (var transaction = new Transaction(doc, "create dimensions"))
             {
                 transaction.Start();
 
-                CreateLinearDimension(doc, new[] {outerEdges[0], outerEdges[2]}, dimensionOrigin);
+                dimensionsCreator.CreateDimension(new[] { outerEdges[0], outerEdges[2] }, dimensionOrigin);
 
-                CreateLinearDimension(doc, new[] {outerEdges[1], outerEdges[3]}, dimensionOrigin);
-
+                dimensionsCreator.CreateDimension(new[] { outerEdges[1], outerEdges[3] }, dimensionOrigin);
+                
                 transaction.Commit();
             }
             
@@ -98,24 +105,6 @@ namespace PutRevitDimensionsToSquareFaces.Commands
             var curveLoop = CurveLoop.Create(edgeArray.Cast<Edge>().Select(x => x.AsCurve()).ToList());
 
             return curveLoop.IsCounterclockwise(face.ComputeNormal(new UV()));
-        }
-
-        private static void CreateLinearDimension(Document doc, IList<Edge> edges, XYZ origin)
-        {
-            var view = doc.ActiveView;
-
-            var firstEdgeLine = (Line)edges[0].AsCurve();
-
-            var dimensionLineDirection = firstEdgeLine.Direction.CrossProduct(view.ViewDirection);
-
-            var dimensionLine = Line.CreateUnbound(origin, dimensionLineDirection);
-
-            var referenceArray = new ReferenceArray();
-
-            foreach (var edge in edges)
-                referenceArray.Append(edge.Reference);
-
-            doc.Create.NewDimension(view, dimensionLine, referenceArray);
         }
     }
 }
